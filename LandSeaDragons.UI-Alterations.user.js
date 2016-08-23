@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Land Sea Dragons - UI Alterations
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.1
-// @description  MidenQuest Chat Extender
+// @version      0.1.2
+// @description  Alters some of the UI to make it easier to nav around
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.UI-Alterations.user.js
 // @author       Vibblez
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js

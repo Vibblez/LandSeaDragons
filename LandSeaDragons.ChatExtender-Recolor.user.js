@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Extender & Recolor
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.1
-// @description  MidenQuest Chat Extender
+// @version      0.1.2
+// @description  Chat Extender
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatExtender-Recolor.user.js
 // @author       Vibblez
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js
