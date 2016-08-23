@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - UI Alterations
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.0
+// @version      0.1.1
 // @description  MidenQuest Chat Extender
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.UI-Alterations.user.js
 // @author       Vibblez
@@ -15,7 +15,7 @@
     'use strict';
 
     $("#content_right > tbody > tr > td > div").html('<a href="javascript:rightSelector(\'0\');">Equipped</a> | <a href="javascript:rightSelector(\'1\');">Inventory</a>');
-    $("#content_left > tbody > tr > td > div").html('<a href="javascript:rightSelector(\'0\');">Challenges</a> | <a href="javascript:rightSelector(\'1\');">Skills</a>  | <a href="javascript:rightSelector(\'2\');">Stats</a>');
+    $("#content_left > tbody > tr > td > div").html('<a href="javascript:leftSelector(\'0\');">Challenges</a> | <a href="javascript:leftSelector(\'1\');">Skills</a>  | <a href="javascript:leftSelector(\'2\');">Stats</a>');
     $("#panel_2_1").css('display','table');    
     $("#panel_2_2").css('display','none');
     $("#panel_2_3").css('display','none');
