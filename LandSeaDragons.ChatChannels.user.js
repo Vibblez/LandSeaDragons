@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.6.1
+// @version      0.1.6
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -65,7 +65,15 @@
         if ($('span.chat_0_1_0', e.target).length > 0) targetClass = 'msgMain';
         if ($('span.chat_0_2_0', e.target).length > 0) targetClass = 'msgMain';
 
-        $(e.target).addClass(targetClass);
+        $(e.target).addClass(targetClass);     
+        
+        var selTab = $(".chatTabSelected").eq(0).attr('id');
+        if(selTab !== "msgAll"){
+            $('#chat_main tr').not('.'+selTab).hide();
+            $('#chat_main tr.'+selTab).show();
+        }else{
+            $('#chat_main tr').show();
+        }
     });
     
     //////////////
@@ -139,6 +147,8 @@
                                 break;
                         }
                     }
+                    clearInterval(chatTimer);
+                    chatTimer = setInterval(function(){ getChat(2); }, 2000);
                     break;
                 case 2:
                     if (data.chat !== 0) {
@@ -154,6 +164,16 @@
         }
     };
 
+    function ClearAllIntervals() {
+        for (var i = 1; i < 99999; i++){
+            window.clearInterval(i);
+        }
+        getChat(0);
+        console.log('started');
+    }
+    
+    ClearAllIntervals();
+    
     function addGlobalStyle(css) {
     var head, style;
     head = document.getElementsByTagName('head')[0];
@@ -166,6 +186,6 @@
     }
 
     addGlobalStyle('#chat_input { width: 780px !important; } #layer_2 { z-index: 3 !important; }');
-    addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); 
+    addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); //new!
 
 })();
