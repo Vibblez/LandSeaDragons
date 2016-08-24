@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Extender & Recolor
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.4
+// @version      0.1.5
 // @description  Chat Extender
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatExtender-Recolor.user.js
 // @author       Vibblez
@@ -25,6 +25,6 @@
     head.appendChild(style);
     }
 
-    addGlobalStyle('#chat_main_border { height: 400px; } #chat_main_border > tbody > tr > td > div { height: 480px !important; } .chat_1, .chat_2 { color: #f148e2; } .chat_5 { color: #25ff00; } .chat_5:before { content: "(Fleet) "; }');
+    addGlobalStyle('#chat_main_border { height: 400px; } #chat_main_border > tbody > tr > td > div { height: 480px !important; } .chat_1, .chat_2 { color: #f148e2; } .chat_5 { color: #7EF73D; } .chat_5:before { content: "(Fleet) "; }');
 
 })();
