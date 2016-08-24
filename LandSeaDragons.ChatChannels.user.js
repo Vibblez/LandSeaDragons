@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.6
+// @version      0.1.6.1
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
