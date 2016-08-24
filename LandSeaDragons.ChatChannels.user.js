@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.1
+// @version      0.1.2
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez
@@ -19,7 +19,10 @@
     var origGetChat = getChat;
     getChat = function (n) {
 		$("#chat_submit").prop( "disabled", true );
-        var chatBuilder = $('#chat_channel').val() + $('#chat_input').val();
+		var chatBuilder;
+		chatBuilder = $('#chat_input').val();
+		var chat_cmd_check = chatBuilder.split(" ");
+		if(chat_cmd_check[0] != "/m" && chat_cmd_check[0] != "/view") chatBuilder = $('#chat_channel').val() + $('#chat_input').val();
         var input = 'null';
         switch(n) {
             case 1:
