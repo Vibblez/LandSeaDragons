@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.6.1
+// @version      0.1.7
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -37,12 +37,12 @@
         $('#chat_channel').val('/f ');
     });
 
-    $('.chatTab').click(function(){ //new! this should replace #chatSelect i guess..
-        chatTabMessages[this.id] = 0; //new!
-        $(this).text(this.id.substr(3)); //new!
+    $('.chatTab').click(function(){
+        chatTabMessages[this.id] = 0; 
+        $(this).text(this.id.substr(3)); 
 
-        $('.chatTabSelected').removeClass('chatTabSelected'); //new!
-        $(this).addClass('chatTabSelected'); //new!
+        $('.chatTabSelected').removeClass('chatTabSelected'); 
+        $(this).addClass('chatTabSelected'); 
 
         if(this.id !== "msgAll"){
             $('#chat_main tr').not('.'+this.id).hide();
@@ -147,8 +147,6 @@
                                 break;
                         }
                     }
-                    clearInterval(chatTimer);
-                    chatTimer = setInterval(function(){ getChat(2); }, 2000);
                     break;
                 case 2:
                     if (data.chat !== 0) {
@@ -186,6 +184,6 @@
     }
 
     addGlobalStyle('#chat_input { width: 780px !important; } #layer_2 { z-index: 3 !important; }');
-    addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); //new!
+    addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); 
 
 })();
