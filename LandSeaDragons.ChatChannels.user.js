@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.3
+// @version      0.1.4
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    $("#chat_form > tbody > tr").html('<tr><td><select id="chat_channel"><option value="">Public</option><option value="/f ">Fleet</option></select><input id="chat_input" type="text" maxlength="200" autocomplete="off"></td><td style="text-align:right;"><input id="chat_submit" type="submit" value="Chat"> Filter: <select id="chatSelect" style="margin-right: 5px"><option value="">All</option><option value="msgMain">Main</option><option value="msgPM">PM</option><option value="msgFleet">Fleet</option></select></td></tr>');
+    $("#chat_form > tbody > tr").html('<tr><td><select id="chat_channel"><option value="">Public</option><option value="/f ">Fleet</option></select><input id="chat_input" type="text" maxlength="200" autocomplete="off"></td><td style="text-align:right;"><input id="chat_submit" type="submit" value="Chat"> Filter: <select id="chatSelect" style="margin-right: 5px"><option value="">All</option><option value="msgMain">Main</option><option value="msgPM">PM</option><option value="msgFleet">Fleet</option><option value="msgGlobal">Global</option></select></td></tr>');
     
 	/////////////////
 	/// Filter started by: euloghtos, completed by Vibblez
@@ -30,6 +30,8 @@
 
     $('#chat_main').on('DOMNodeInserted', 'tr', function(e) {
         if ($('span.chat_5', e.target).length > 0) $(e.target).addClass('msgFleet');
+        if ($('span.chat_4', e.target).length > 0) $(e.target).addClass('msgGlobal');
+        if ($('span.chat_3', e.target).length > 0) $(e.target).addClass('msgGlobal');
 		if ($('span.chat_1', e.target).length > 0) $(e.target).addClass('msgPM');
 		if ($('span.chat_2', e.target).length > 0) $(e.target).addClass('msgPM');
 		if ($('span.chat_0_0_0', e.target).length > 0) $(e.target).addClass('msgMain');
@@ -41,19 +43,37 @@
 	//////////////
 	/// Filter End
 	//////////////
-	
-    var origGetChat = getChat;
+    var chatTimer;
+    var origGetChat = getChat;    
     getChat = function (n) {
-		$("#chat_submit").prop( "disabled", true );
+        var chatInput = $('#chat_input').val();
+        if(!chatInput.length && n === 1) return;
+        if(n === 1) $("#chat_send").prop( "disabled", true );        
 		var chatBuilder = "";
-		var chatInput = $('#chat_input').val();
 		var chatChannel = $('#chat_channel').val();
 		var chat_cmd_check = chatInput.split(" ");
-		if(chatInput.length && chat_cmd_check[0] != "/m" && chat_cmd_check[0] != "/view"){ chatBuilder = chatChannel + chatInput; }
-		else if(chatInput.length && chat_cmd_check[0] == "/p" && chatChannel == "/f "){ chatBuilder = chatInput.replace("/p ", ""); console.log(chatInput) }
-		else { chatBuilder = chatInput; }
-        var input = 'null';
-        switch(n) {
+		switch(chat_cmd_check[0]) {
+            case "/m":
+            case "/view":
+                if(chatChannel == "/f "){
+                    chatBuilder = chatInput;
+                }else{
+                    chatBuilder = chatChannel + chatInput;
+                }
+                break;
+            case "/p":
+                if(chatChannel == "/f "){
+                    chatInput = chatInput.replace("/p ", "");
+                    chatBuilder = chatInput;
+                }else{
+                    chatBuilder = chatInput;
+                }
+                break;
+            default:
+                chatBuilder = chatChannel + chatInput;
+		}
+		var input = chatBuilder;
+		switch(n) {
             case 1:
                 input = chatBuilder;
                 if (input == "/ignored") {
@@ -73,10 +93,10 @@
         $.post( "chat.php", { action:n,input:input }, function(data) {
             switch(n) {
                 case 0: //Initial
-                    if (data.chat != 0) {
+                    if (data.chat !== 0) {
                         renderChat(data.chat,data.fleet,0);
                     }
-                    setInterval(function(){ getChat(2); }, 3000);
+                    chatTimer = SetInterval(function(){ getChat(2); }, 3000);
                     break;
                 case 1:
                     if (typeof data.type !== "undefined") {
@@ -90,19 +110,24 @@
                                 break;
                         }
                     }
-                    $("#chat_input").val('');
-                    $("#chat_input").focus();
+                    clearInterval(chatTimer);
+                    getChat(2);
+                    chatTimer = SetInterval(function(){ getChat(2); }, 3000);
                     break;
                 case 2:
-                    if (data.chat != 0) {
+                    if (data.chat !== 0) {
                         renderChat(data.chat,data.fleet,1);
                     }
                     break;
             }
-			$("#chat_submit").prop( "disabled", false );
+            $("#chat_send").prop( "disabled", false );
         },"json");
-    }
-        
+        if(n != 2){            
+            $("#chat_input").val('');
+            $("#chat_input").focus();
+        }
+    };
+
     function addGlobalStyle(css) {
     var head, style;
     head = document.getElementsByTagName('head')[0];
