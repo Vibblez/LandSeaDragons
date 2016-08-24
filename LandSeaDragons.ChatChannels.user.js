@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.4
+// @version      0.1.5
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -20,7 +20,7 @@
 	/// Filter started by: euloghtos, completed by Vibblez
 	/////////////////
     $('#chatSelect').change(function(){
-		if($('#chatSelect').val() != ""){
+		if($('#chatSelect').val() !== ""){
 			$('#chat_main tr').not('.'+$(this).val()).hide();
 			$('#chat_main tr.'+$(this).val()).show();
 		}else{
@@ -44,11 +44,11 @@
 	/// Filter End
 	//////////////
     var chatTimer;
-    var origGetChat = getChat;    
+    var origGetChat = getChat;
     getChat = function (n) {
         var chatInput = $('#chat_input').val();
         if(!chatInput.length && n === 1) return;
-        if(n === 1) $("#chat_send").prop( "disabled", true );        
+        if(n === 1) $("#chat_send").prop( "disabled", true );
 		var chatBuilder = "";
 		var chatChannel = $('#chat_channel').val();
 		var chat_cmd_check = chatInput.split(" ");
@@ -96,7 +96,7 @@
                     if (data.chat !== 0) {
                         renderChat(data.chat,data.fleet,0);
                     }
-                    chatTimer = SetInterval(function(){ getChat(2); }, 3000);
+                    chatTimer = setInterval(function(){ getChat(2); }, 2000);
                     break;
                 case 1:
                     if (typeof data.type !== "undefined") {
@@ -110,9 +110,6 @@
                                 break;
                         }
                     }
-                    clearInterval(chatTimer);
-                    getChat(2);
-                    chatTimer = SetInterval(function(){ getChat(2); }, 3000);
                     break;
                 case 2:
                     if (data.chat !== 0) {
