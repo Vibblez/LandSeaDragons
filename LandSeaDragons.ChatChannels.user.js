@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.5
+// @version      0.1.6.1
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -14,45 +14,74 @@
 (function() {
     'use strict';
 
-    $("#chat_form > tbody > tr").html('<tr><td><select id="chat_channel"><option value="">Public</option><option value="/f ">Fleet</option></select><input id="chat_input" type="text" maxlength="200" autocomplete="off"></td><td style="text-align:right;"><input id="chat_submit" type="submit" value="Chat"> Filter: <select id="chatSelect" style="margin-right: 5px"><option value="">All</option><option value="msgMain">Main</option><option value="msgPM">PM</option><option value="msgFleet">Fleet</option><option value="msgGlobal">Global</option></select></td></tr>');
+    $("#chat_form > tbody > tr").html('<tr><td><select id="chat_channel"><option value="">Public</option><option value="/f ">Fleet</option></select><input id="chat_input" type="text" maxlength="200" autocomplete="off"></td><td style="text-align:right;"><input id="chat_submit" type="submit" value="Chat"></td></tr>');
     
-	/////////////////
-	/// Filter started by: euloghtos, completed by Vibblez
-	/////////////////
-    $('#chatSelect').change(function(){
-		if($('#chatSelect').val() !== ""){
-			$('#chat_main tr').not('.'+$(this).val()).hide();
-			$('#chat_main tr.'+$(this).val()).show();
-		}else{
-			$('#chat_main tr').show();
-		}
+    /////////////////
+    /// Filter started by: euloghtos, completed by Vibblez
+    /////////////////
+    var chatTabMessages = { msgMain:0, msgFleet:0, msgPM:0, msgGlobal:0 }; 
+
+    $('#chat_main_border').before('<div id="chatTabs"></div>'); 
+
+    $('#chatTabs').append('<div id="msgAll" class="chatTab chatTabSelected">All</div>'); 
+    $('#chatTabs').append('<div id="msgMain" class="chatTab">Main</div>'); 
+    $('#chatTabs').append('<div id="msgFleet" class="chatTab">Fleet</div>'); 
+    $('#chatTabs').append('<div id="msgPM" class="chatTab">PM</div>'); 
+    $('#chatTabs').append('<div id="msgGlobal" class="chatTab">Global</div>'); 
+
+    $('#msgMain').click(function(){
+        $('#chat_channel').val('');
+    });
+
+    $('#msgFleet').click(function(){
+        $('#chat_channel').val('/f ');
+    });
+
+    $('.chatTab').click(function(){ //new! this should replace #chatSelect i guess..
+        chatTabMessages[this.id] = 0; //new!
+        $(this).text(this.id.substr(3)); //new!
+
+        $('.chatTabSelected').removeClass('chatTabSelected'); //new!
+        $(this).addClass('chatTabSelected'); //new!
+
+        if(this.id !== "msgAll"){
+            $('#chat_main tr').not('.'+this.id).hide();
+            $('#chat_main tr.'+this.id).show();
+        }else{
+            $('#chat_main tr').show();
+        }
     });
 
     $('#chat_main').on('DOMNodeInserted', 'tr', function(e) {
-        if ($('span.chat_5', e.target).length > 0) $(e.target).addClass('msgFleet');
-        if ($('span.chat_4', e.target).length > 0) $(e.target).addClass('msgGlobal');
-        if ($('span.chat_3', e.target).length > 0) $(e.target).addClass('msgGlobal');
-		if ($('span.chat_1', e.target).length > 0) $(e.target).addClass('msgPM');
-		if ($('span.chat_2', e.target).length > 0) $(e.target).addClass('msgPM');
-		if ($('span.chat_0_0_0', e.target).length > 0) $(e.target).addClass('msgMain');
-		if ($('span.chat_0_1_0', e.target).length > 0) $(e.target).addClass('msgMain');
-		if ($('span.chat_0_2_0', e.target).length > 0) $(e.target).addClass('msgMain');
-		if($('#chatSelect').val() != "")
-        if (!$(e.target).hasClass($('#chatSelect').val())) $(e.target).hide();
+
+         var targetClass = '';
+
+        if ($('span.chat_5', e.target).length > 0) targetClass = 'msgFleet';
+        if ($('span.chat_4', e.target).length > 0) targetClass = 'msgGlobal';
+        if ($('span.chat_3', e.target).length > 0) targetClass = 'msgGlobal';
+        if ($('span.chat_1', e.target).length > 0) targetClass = 'msgPM';
+        if ($('span.chat_2', e.target).length > 0) targetClass = 'msgPM';
+        if ($('span.chat_0_0_0', e.target).length > 0) targetClass = 'msgMain';
+        if ($('span.chat_0_1_0', e.target).length > 0) targetClass = 'msgMain';
+        if ($('span.chat_0_2_0', e.target).length > 0) targetClass = 'msgMain';
+
+        $(e.target).addClass(targetClass);
     });
-	//////////////
-	/// Filter End
-	//////////////
+    
+    //////////////
+    /// Filter End
+    //////////////
+    
     var chatTimer;
     var origGetChat = getChat;
     getChat = function (n) {
         var chatInput = $('#chat_input').val();
         if(!chatInput.length && n === 1) return;
         if(n === 1) $("#chat_send").prop( "disabled", true );
-		var chatBuilder = "";
-		var chatChannel = $('#chat_channel').val();
-		var chat_cmd_check = chatInput.split(" ");
-		switch(chat_cmd_check[0]) {
+        var chatBuilder = "";
+        var chatChannel = $('#chat_channel').val();
+        var chat_cmd_check = chatInput.split(" ");
+        switch(chat_cmd_check[0]) {
             case "/m":
             case "/view":
                 if(chatChannel == "/f "){
@@ -71,9 +100,9 @@
                 break;
             default:
                 chatBuilder = chatChannel + chatInput;
-		}
-		var input = chatBuilder;
-		switch(n) {
+        }
+        var input = chatBuilder;
+        switch(n) {
             case 1:
                 input = chatBuilder;
                 if (input == "/ignored") {
@@ -136,6 +165,7 @@
     head.appendChild(style);
     }
 
-    addGlobalStyle('#chat_input { width: 670px !important; } #layer_2 { z-index: 3 !important; }');
+    addGlobalStyle('#chat_input { width: 780px !important; } #layer_2 { z-index: 3 !important; }');
+    addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); 
 
 })();
