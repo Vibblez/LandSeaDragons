@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Boss Alert
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.0
+// @version      0.1.1
 // @description  Sound alert on boss
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.Alert.Boss.user.js
 // @author       Nullmega
@@ -11,7 +11,15 @@
 
 (function() {
     'use strict';
-
-var bossCheck = setInterval(function(){ var pt = document.title; if(pt.indexOf('BOSS') !== -1){ var audio = new Audio('http://soundbible.com/mp3/foghorn-daniel_simon.mp3'); audio.play(); }}, 5000);
+	console.log('Loaded Boss Alerter...');
+	var bossCheck = setInterval(
+		function(){ 
+			var pt = document.title; 
+			if(pt.indexOf('BOSS') !== -1){ 
+				var audio = new Audio('http://soundbible.com/mp3/foghorn-daniel_simon.mp3'); 
+				audio.play(); 
+			}
+		}, 
+	5000);
 
 })();

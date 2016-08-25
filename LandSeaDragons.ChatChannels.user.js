@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.8
+// @version      0.2.0
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -13,7 +13,7 @@
 
 (function() {
     'use strict';
-
+    console.log('Loaded Chat Channels...');
     $("#chat_form > tbody > tr").html('<tr><td><select id="chat_channel"><option value="">Public</option><option value="/f ">Fleet</option></select><input id="chat_input" type="text" maxlength="200" autocomplete="off"></td><td style="text-align:right;"><input id="chat_submit" type="submit" value="Chat"></td></tr>');
     
     /////////////////
@@ -170,14 +170,15 @@
 
     function ClearAllIntervals() {
         for (var i = 1; i < 99999; i++){
-            window.clearInterval(i);
+            if(i.length){
+                console.log(i + " was set");
+                window.clearInterval(i);
+            }
         }
         getChat(0);
         console.log('started');
     }
-    
-    ClearAllIntervals();
-    
+           
     function addGlobalStyle(css) {
     var head, style;
     head = document.getElementsByTagName('head')[0];
@@ -191,5 +192,5 @@
 
     addGlobalStyle('#chat_input { width: 780px !important; } #layer_2 { z-index: 3 !important; }');
     addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); 
-
+    ClearAllIntervals();
 })();

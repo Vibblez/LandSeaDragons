@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Stance Not Mixed
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.1
+// @version      0.1.2
 // @description  Checks stance, displays red if not in mixed.
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.Stance-Check.user.js
 // @author       Vibblez
@@ -13,6 +13,7 @@
 
 (function() {
     'use strict';
+	console.log('Loaded Stance Checker...');
     if($("#curr_stance").html() != "Mixed"){ $("#curr_stance").css('color', 'red'); }else{ $("#curr_stance").css('color', ''); }
     var origParseFloat = stanceToggle;
     stanceToggle =  function (n) {

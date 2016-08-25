@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Extender & Recolor
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.5
+// @version      0.1.6
 // @description  Chat Extender
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatExtender-Recolor.user.js
 // @author       Vibblez
@@ -13,7 +13,7 @@
 
 (function() {
     'use strict';
-
+	console.log('Loaded Chat Extender...');
     function addGlobalStyle(css) {
     var head, style;
     head = document.getElementsByTagName('head')[0];

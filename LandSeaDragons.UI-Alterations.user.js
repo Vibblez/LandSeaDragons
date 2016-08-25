@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - UI Alterations
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.3
+// @version      0.1.4
 // @description  Alters some of the UI to make it easier to nav around
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.UI-Alterations.user.js
 // @author       Vibblez
@@ -13,7 +13,7 @@
 
 (function() {
     'use strict';
-
+	console.log('Loaded UI Alter...');
     $("#content_right > tbody > tr > td > div").html('<a href="javascript:rightSelector(\'0\');">Equipped</a> | <a href="javascript:rightSelector(\'1\');">Inventory</a>');
     $("#content_left > tbody > tr > td > div").html('<a href="javascript:leftSelector(\'0\');">Challenges</a> | <a href="javascript:leftSelector(\'1\');">Skills</a>  | <a href="javascript:leftSelector(\'2\');">Stats</a>');
     $("#panel_2_1").css('display','table');    
