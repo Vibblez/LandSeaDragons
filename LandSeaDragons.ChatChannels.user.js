@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.2.0
+// @version      0.2.1
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -29,11 +29,7 @@
     $('#chatTabs').append('<div id="msgPM" class="chatTab">PM</div>'); 
     $('#chatTabs').append('<div id="msgGlobal" class="chatTab">Global</div>'); 
 
-    $('#msgAll').click(function(){
-        $('#chat_channel').val('');
-    });
-    
-    $('#msgMain').click(function(){
+    $('#msgAll, #msgMain').click(function(){
         $('#chat_channel').val('');
     });
 
@@ -42,9 +38,7 @@
     });
 
     $('.chatTab').click(function(){
-        chatTabMessages[this.id] = 0; !
-        $(this).text(this.id.substr(3));
-
+        
         $('.chatTabSelected').removeClass('chatTabSelected');
         $(this).addClass('chatTabSelected');
 
@@ -53,7 +47,11 @@
             $('#chat_main tr.'+this.id).show();
         }else{
             $('#chat_main tr').show();
+            return;
         }
+
+        chatTabMessages[this.id] = 0; !
+        $(this).text(this.id.substr(3));
     });
 
     $('#chat_main').on('DOMNodeInserted', 'tr', function(e) {
@@ -73,10 +71,10 @@
         
         var selTab = $(".chatTabSelected").eq(0).attr('id');
         if(selTab !== "msgAll"){
-            $('#chat_main tr').not('.'+selTab).hide();
-            $('#chat_main tr.'+selTab).show();
-        }else{
-            $('#chat_main tr').show();
+            if (!$(e.target).hasClass(selTab)){
+                $('#'+targetClass).text(targetClass.substr(3)+' ('+ ++chatTabMessages[targetClass] +')');
+                $(e.target).hide();
+            }
         }
     });
     
@@ -115,6 +113,7 @@
         }
         var input;
         if(chatBuilder !== "/f "){ input = chatBuilder; }
+        if(chatBuilder == "/f "){ input = ""; }
         switch(n) {
             case 1:
                 if (input == "/ignored") {
@@ -133,12 +132,12 @@
         }
         $.post( "chat.php", { action:n,input:input }, function(data) {
             switch(n) {
-                case 0: //Initial
-                    if (data.chat !== 0) {
-                        renderChat(data.chat,data.fleet,0);
-                    }
-                    chatTimer = setInterval(function(){ getChat(2); }, 2000);
-                    break;
+                // case 0: //Initial
+                //     if (data.chat !== 0) {
+                //         renderChat(data.chat,data.fleet,0);
+                //     }
+                //     chatTimer = setInterval(function(){ getChat(2); }, 2000);
+                //     break;
                 case 1:
                     if (typeof data.type !== "undefined") {
                         switch(data.type) {
@@ -167,17 +166,6 @@
             $("#chat_input").focus();
         }
     };
-
-    function ClearAllIntervals() {
-        for (var i = 1; i < 99999; i++){
-            if(i.length){
-                console.log(i + " was set");
-                window.clearInterval(i);
-            }
-        }
-        getChat(0);
-        console.log('started');
-    }
            
     function addGlobalStyle(css) {
     var head, style;
@@ -192,5 +180,4 @@
 
     addGlobalStyle('#chat_input { width: 780px !important; } #layer_2 { z-index: 3 !important; }');
     addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); 
-    ClearAllIntervals();
 })();
