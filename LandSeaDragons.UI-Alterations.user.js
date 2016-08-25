@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - UI Alterations
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.2
+// @version      0.1.3
 // @description  Alters some of the UI to make it easier to nav around
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.UI-Alterations.user.js
 // @author       Vibblez
@@ -53,6 +53,6 @@
         head.appendChild(style);
     }
 
-    addGlobalStyle('#ActionCD { margin-top: 5px !important; }'); 
+    addGlobalStyle('#ActionCD { margin-top: 5px !important; } #layer_1 { width: 100%; position: relative; z-index: 2; } #layer_2 { width: 100%; position: relative; z-index: 1; float: left; top: 0 !important; }'); 
     
 })();
