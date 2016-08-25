@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Land Sea Dragons - Chat Channels
 // @namespace    https://github.com/Vibblez/LandSeaDragons
-// @version      0.1.7
+// @version      0.1.8
 // @description  Chat Channel Drop Down
 // @updateURL    https://raw.githubusercontent.com/Vibblez/LandSeaDragons/master/LandSeaDragons.ChatChannels.user.js
 // @author       Vibblez, euloghtos
@@ -29,6 +29,10 @@
     $('#chatTabs').append('<div id="msgPM" class="chatTab">PM</div>'); 
     $('#chatTabs').append('<div id="msgGlobal" class="chatTab">Global</div>'); 
 
+    $('#msgAll').click(function(){
+        $('#chat_channel').val('');
+    });
+    
     $('#msgMain').click(function(){
         $('#chat_channel').val('');
     });
@@ -38,11 +42,11 @@
     });
 
     $('.chatTab').click(function(){
-        chatTabMessages[this.id] = 0; 
-        $(this).text(this.id.substr(3)); 
+        chatTabMessages[this.id] = 0; !
+        $(this).text(this.id.substr(3));
 
-        $('.chatTabSelected').removeClass('chatTabSelected'); 
-        $(this).addClass('chatTabSelected'); 
+        $('.chatTabSelected').removeClass('chatTabSelected');
+        $(this).addClass('chatTabSelected');
 
         if(this.id !== "msgAll"){
             $('#chat_main tr').not('.'+this.id).hide();
@@ -109,10 +113,10 @@
             default:
                 chatBuilder = chatChannel + chatInput;
         }
-        var input = chatBuilder;
+        var input;
+        if(chatBuilder !== "/f "){ input = chatBuilder; }
         switch(n) {
             case 1:
-                input = chatBuilder;
                 if (input == "/ignored") {
                     showIgnored();
                     $("#chat_input").val("");
@@ -147,6 +151,8 @@
                                 break;
                         }
                     }
+                    clearInterval(chatTimer);
+                    chatTimer = setInterval(function(){ getChat(2); }, 2000);
                     break;
                 case 2:
                     if (data.chat !== 0) {
