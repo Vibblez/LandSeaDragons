@@ -15,25 +15,21 @@
     'use strict';
 
     $("#chat_form > tbody > tr").html('<tr><td><select id="chat_channel"><option value="">Public</option><option value="/f ">Fleet</option></select><input id="chat_input" type="text" maxlength="200" autocomplete="off"></td><td style="text-align:right;"><input id="chat_submit" type="submit" value="Chat"></td></tr>');
-    
+
     /////////////////
     /// Filter started by: euloghtos, completed by Vibblez
     /////////////////
-    var chatTabMessages = { msgMain:0, msgFleet:0, msgPM:0, msgGlobal:0 }; 
+    var chatTabMessages = { msgMain:0, msgFleet:0, msgPM:0, msgGlobal:0 };
 
-    $('#chat_main_border').before('<div id="chatTabs"></div>'); 
+    $('#chat_main_border').before('<div id="chatTabs"></div>');
 
-    $('#chatTabs').append('<div id="msgAll" class="chatTab chatTabSelected">All</div>'); 
-    $('#chatTabs').append('<div id="msgMain" class="chatTab">Main</div>'); 
-    $('#chatTabs').append('<div id="msgFleet" class="chatTab">Fleet</div>'); 
-    $('#chatTabs').append('<div id="msgPM" class="chatTab">PM</div>'); 
-    $('#chatTabs').append('<div id="msgGlobal" class="chatTab">Global</div>'); 
+    $('#chatTabs').append('<div id="msgAll" class="chatTab chatTabSelected">All</div>');
+    $('#chatTabs').append('<div id="msgMain" class="chatTab">Main</div>');
+    $('#chatTabs').append('<div id="msgFleet" class="chatTab">Fleet</div>');
+    $('#chatTabs').append('<div id="msgPM" class="chatTab">Messages</div>');
+    $('#chatTabs').append('<div id="msgGlobal" class="chatTab">Global</div>');
 
-    $('#msgAll').click(function(){
-        $('#chat_channel').val('');
-    });
-    
-    $('#msgMain').click(function(){
+    $('#msgAll, #msgMain').click(function(){
         $('#chat_channel').val('');
     });
 
@@ -42,8 +38,6 @@
     });
 
     $('.chatTab').click(function(){
-        chatTabMessages[this.id] = 0; !
-        $(this).text(this.id.substr(3));
 
         $('.chatTabSelected').removeClass('chatTabSelected');
         $(this).addClass('chatTabSelected');
@@ -53,12 +47,16 @@
             $('#chat_main tr.'+this.id).show();
         }else{
             $('#chat_main tr').show();
+            return;
         }
+
+        chatTabMessages[this.id] = 0;
+        $(this).text(this.id.substr(3));
     });
 
     $('#chat_main').on('DOMNodeInserted', 'tr', function(e) {
 
-         var targetClass = '';
+        var targetClass = '';
 
         if ($('span.chat_5', e.target).length > 0) targetClass = 'msgFleet';
         if ($('span.chat_4', e.target).length > 0) targetClass = 'msgGlobal';
@@ -69,21 +67,22 @@
         if ($('span.chat_0_1_0', e.target).length > 0) targetClass = 'msgMain';
         if ($('span.chat_0_2_0', e.target).length > 0) targetClass = 'msgMain';
 
-        $(e.target).addClass(targetClass);     
-        
+        $(e.target).addClass(targetClass);
+
         var selTab = $(".chatTabSelected").eq(0).attr('id');
+
         if(selTab !== "msgAll"){
-            $('#chat_main tr').not('.'+selTab).hide();
-            $('#chat_main tr.'+selTab).show();
-        }else{
-            $('#chat_main tr').show();
+            if (!$(e.target).hasClass(selTab)){
+                $('#'+targetClass).text(targetClass.substr(3)+' ('+ ++chatTabMessages[targetClass] +')');
+                $(e.target).hide();
+            }
         }
     });
-    
+
     //////////////
     /// Filter End
     //////////////
-    
+
     var chatTimer;
     var origGetChat = getChat;
     getChat = function (n) {
@@ -162,7 +161,7 @@
             }
             $("#chat_send").prop( "disabled", false );
         },"json");
-        if(n != 2){            
+        if(n != 2){
             $("#chat_input").val('');
             $("#chat_input").focus();
         }
@@ -175,21 +174,21 @@
         getChat(0);
         console.log('started');
     }
-    
-    ClearAllIntervals();
-    
-    function addGlobalStyle(css) {
-    var head, style;
-    head = document.getElementsByTagName('head')[0];
-    if (!head) { return; }
 
-    style = document.createElement('style');
-    style.type = 'text/css';
-    style.innerHTML = css;
-    head.appendChild(style);
+    ClearAllIntervals();
+
+    function addGlobalStyle(css) {
+        var head, style;
+        head = document.getElementsByTagName('head')[0];
+        if (!head) { return; }
+
+        style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = css;
+        head.appendChild(style);
     }
 
     addGlobalStyle('#chat_input { width: 780px !important; } #layer_2 { z-index: 3 !important; }');
-    addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }'); 
+    addGlobalStyle('.chatTabSelected { color: #fff !important; } .chatTab { display: inline-block; border-radius: 5px 5px 0px 0px; border: 1px solid #999; background: #000; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; margin-left: 5px; margin-bottom: -1px; color: #999; width: 90px; text-align: center; }');
 
 })();
