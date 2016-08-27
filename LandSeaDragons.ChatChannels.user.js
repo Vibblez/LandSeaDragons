@@ -65,6 +65,7 @@
         if ($('span.chat_2', e.target).length > 0) targetClass = 'msgPM';
         if ($('span.chat_0_0_0', e.target).length > 0) targetClass = 'msgMain';
         if ($('span.chat_0_1_0', e.target).length > 0) targetClass = 'msgMain';
+        if ($('span.chat_0_1_2', e.target).length > 0) targetClass = 'msgMain';
         if ($('span.chat_0_2_0', e.target).length > 0) targetClass = 'msgMain';
 
         $(e.target).addClass(targetClass);     
